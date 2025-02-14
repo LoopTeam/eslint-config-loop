@@ -1,3 +1,4 @@
+import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
@@ -20,7 +21,7 @@ export default tseslint.config(
   }),
 
   {
-    files: ['{apps/libs}/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    files: ['{src,apps,libs}/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
@@ -33,29 +34,14 @@ export default tseslint.config(
         argsIgnorePattern: '^_',
         ignoreRestSiblings: true,
       }],
-
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
-      '@nx/enforce-module-boundaries': [
-        'error',
-        {
-          enforceBuildableLibDependency: true,
-          allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
-          depConstraints: [
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
-            },
-          ],
-        },
-      ],
-
     },
   },
 
   // Add node globals (process, __dirname, etc) to config files
-  // {
-  //   files: ['*.config.*'],
-  //   languageOptions: { globals: globals.node },
-  // },
+  {
+    files: ['*.config.*'],
+    languageOptions: { globals: globals.node },
+  },
 );
